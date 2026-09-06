@@ -1,13 +1,45 @@
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/authContext";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import ProtectedRoute from "./components/protectedRoutes";
 
-function App() {
 
-  return (
-    <>
-    <h1>Setup</h1>
-      
-    </>
-  )
+function HomeRedirect() {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
+  return user.role === "manager"
+    ? <Navigate to="/manager/dashboard" replace />
+    : <Navigate to="/my-reports" replace />;
 }
 
-export default App
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          <Route
+            path="/my-reports"
+            element={
+              <ProtectedRoute role="team_member">
+                <div className="p-8">My reports page (coming in Step 10)</div>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/manager/dashboard"
+            element={
+              <ProtectedRoute role="manager">
+                <div className="p-8">Manager dashboard (coming in Step 11)</div>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
