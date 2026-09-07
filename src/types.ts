@@ -56,3 +56,32 @@ export interface Report {
   status: ReportStatus;
   current_version: number;
 }
+
+export interface ReviewComment {
+  id: number;
+  version_no: number;
+  manager_name: string;
+  action: "approved" | "changes_requested";
+  comment: string;
+  created_at: string;
+}
+
+export interface ManagerReportDetail {
+  id: number;
+  user_id: number;
+  user_name: string;
+  project_id: number;
+  project_name: string;
+  week_start: string;
+  week_end: string;
+  status: ReportStatus;
+  current_version: number;
+  tasks_completed: TaskItem[];
+  tasks_planned_next: string;
+  blockers: BlockerItem[];
+  achievements: AchievementItem[];
+  hours_breakdown: HoursItem[];
+  notes: string;
+  versions: { id: number; version_no: number; snapshot: any; submitted_at: string }[];
+  comments: ReviewComment[];
+}
