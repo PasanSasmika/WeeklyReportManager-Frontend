@@ -8,6 +8,7 @@ import ReportForm from "./pages/team/ReportForm";
 import ReportDetail from "./pages/team/ReportDetail";
 import ManagerReportDetail from "./pages/manager/ManagerReportDetail";
 import ManagerDashboard from "./pages/manager/managerDashboard";
+import ManagerReportsList from "./pages/manager/ManagerReportsList";
 
 
 function HomeRedirect() {
@@ -34,7 +35,11 @@ export default function App() {
          <Route path="/my-reports/:id/edit" element={<ProtectedRoute role="team_member"><ReportForm /></ProtectedRoute>}/>
          <Route path="/my-reports/:id" element={<ProtectedRoute role="team_member"><ReportDetail /></ProtectedRoute>}/>
          <Route path="/manager/dashboard" element={<ProtectedRoute role="manager"> <ManagerDashboard /> </ProtectedRoute>}/>
-         <Route path="/manager/reports/:id" element={<ProtectedRoute role="manager"><ManagerReportDetail /></ProtectedRoute>}/></Routes>
+         <Route path="/manager/reports/:id" element={<ProtectedRoute role="manager"><ManagerReportDetail /></ProtectedRoute>}/>
+         <Route path="/manager/reports" element={<ProtectedRoute role="manager"><ManagerReportsList /></ProtectedRoute>}/>
+         
+         </Routes>
+  
       </AuthProvider>
     </BrowserRouter>
   );
