@@ -13,8 +13,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import api from "../../api/client";
-import ManagerNav from "../../components/ManagerNav";
 import { getCurrentWeekRange } from "../../utils/dates";
+import ManagerNav from "../../components/ManagerNav";
 
 interface Summary {
   reportsSubmitted: number;
