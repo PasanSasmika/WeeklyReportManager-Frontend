@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "./context/authContext";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import ProtectedRoute from "./components/protectedRoutes";
+import ReportHistory from "./pages/team/ReportHistory";
 
 
 function HomeRedirect() {
@@ -23,13 +24,13 @@ export default function App() {
           <Route path="/register" element={<Register />} />
 
           <Route
-            path="/my-reports"
-            element={
-              <ProtectedRoute role="team_member">
-                <div className="p-8">My reports page (coming in Step 10)</div>
-              </ProtectedRoute>
-            }
-          />
+  path="/my-reports"
+  element={
+    <ProtectedRoute role="team_member">
+      <ReportHistory />
+    </ProtectedRoute>
+  }
+/>
           <Route
             path="/manager/dashboard"
             element={
