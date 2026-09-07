@@ -30,7 +30,7 @@ export default function ReportHistory() {
   async function loadReports() {
     setLoading(true);
     try {
-      const res = await api.get("/reports", {
+      const res = await api.get("/report", {
         params: { status: statusFilter, page, limit, sortBy: "week_start", order: "desc" },
       });
       setReports(res.data.data);

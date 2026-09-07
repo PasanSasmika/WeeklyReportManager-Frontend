@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import ProtectedRoute from "./components/protectedRoutes";
 import ReportHistory from "./pages/team/ReportHistory";
+import ReportForm from "./pages/team/ReportForm";
 
 
 function HomeRedirect() {
@@ -39,6 +40,24 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+
+          <Route
+  path="/my-reports/new"
+  element={
+    <ProtectedRoute role="team_member">
+      <ReportForm />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/my-reports/:id/edit"
+  element={
+    <ProtectedRoute role="team_member">
+      <ReportForm />
+    </ProtectedRoute>
+  }
+/>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
