@@ -42,6 +42,7 @@ export default function ReportForm() {
   }, []);
 
   // load existing report if editing
+   // load existing report if editing
   useEffect(() => {
     if (!isEditMode) return;
     api.get(`/report/${id}`).then((res) => {
@@ -49,11 +50,11 @@ export default function ReportForm() {
       setProjectId(r.project_id);
       setWeekStart(r.week_start.slice(0, 10));
       setWeekEnd(r.week_end.slice(0, 10));
-      setTasks(JSON.parse(r.tasks_completed || "[]"));
+      setTasks(r.tasks_completed || []);
       setTasksPlannedNext(r.tasks_planned_next || "");
-      setBlockers(JSON.parse(r.blockers || "[]"));
-      setAchievements(JSON.parse(r.achievements || "[]"));
-      setHours(JSON.parse(r.hours_breakdown || "[]"));
+      setBlockers(r.blockers || []);
+      setAchievements(r.achievements || []);
+      setHours(r.hours_breakdown || []);
       setNotes(r.notes || "");
       if (r.latestComment && r.status === "needs_correction") {
         setCorrectionComment(r.latestComment.comment);
@@ -82,7 +83,7 @@ export default function ReportForm() {
     return "";
   }
 
-  async function handleSaveDraft() {
+    async function handleSaveDraft() {
     const validationError = validate();
     if (validationError) return setError(validationError);
 
@@ -102,7 +103,7 @@ export default function ReportForm() {
     }
   }
 
-  async function handleSubmit() {
+    async function handleSubmit() {
     const validationError = validate();
     if (validationError) return setError(validationError);
 
