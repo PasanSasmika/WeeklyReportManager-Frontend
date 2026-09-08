@@ -42,6 +42,7 @@ export default function ReportForm() {
   }, []);
 
   // load existing report if editing
+   // load existing report if editing
   useEffect(() => {
     if (!isEditMode) return;
     api.get(`/report/${id}`).then((res) => {
@@ -49,11 +50,11 @@ export default function ReportForm() {
       setProjectId(r.project_id);
       setWeekStart(r.week_start.slice(0, 10));
       setWeekEnd(r.week_end.slice(0, 10));
-      setTasks(JSON.parse(r.tasks_completed || "[]"));
+      setTasks(r.tasks_completed || []);
       setTasksPlannedNext(r.tasks_planned_next || "");
-      setBlockers(JSON.parse(r.blockers || "[]"));
-      setAchievements(JSON.parse(r.achievements || "[]"));
-      setHours(JSON.parse(r.hours_breakdown || "[]"));
+      setBlockers(r.blockers || []);
+      setAchievements(r.achievements || []);
+      setHours(r.hours_breakdown || []);
       setNotes(r.notes || "");
       if (r.latestComment && r.status === "needs_correction") {
         setCorrectionComment(r.latestComment.comment);
@@ -82,7 +83,7 @@ export default function ReportForm() {
     return "";
   }
 
-  async function handleSaveDraft() {
+    async function handleSaveDraft() {
     const validationError = validate();
     if (validationError) return setError(validationError);
 
@@ -102,7 +103,7 @@ export default function ReportForm() {
     }
   }
 
-  async function handleSubmit() {
+    async function handleSubmit() {
     const validationError = validate();
     if (validationError) return setError(validationError);
 
@@ -232,6 +233,7 @@ export default function ReportForm() {
         </div>
 
         {/* tasks table */}
+              {/* tasks table */}
         <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-sm font-medium">Tasks completed</h2>
@@ -242,76 +244,95 @@ export default function ReportForm() {
           {tasks.map((task, i) => (
             <div key={i} className="border border-gray-100 rounded-md p-3 mb-2">
               <div className="grid grid-cols-2 gap-2 mb-2">
-                <input
-                  placeholder="Task name"
-                  value={task.task}
-                  onChange={(e) => updateTask(i, "task", e.target.value)}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                />
-                <select
-                  value={task.priority}
-                  onChange={(e) => updateTask(i, "priority", e.target.value)}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                >
-                  <option value="low">Low priority</option>
-                  <option value="medium">Medium priority</option>
-                  <option value="high">High priority</option>
-                </select>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Task name</label>
+                  <input
+                    placeholder="Task name"
+                    value={task.task}
+                    onChange={(e) => updateTask(i, "task", e.target.value)}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Priority</label>
+                  <select
+                    value={task.priority}
+                    onChange={(e) => updateTask(i, "priority", e.target.value)}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  >
+                    <option value="low">Low priority</option>
+                    <option value="medium">Medium priority</option>
+                    <option value="high">High priority</option>
+                  </select>
+                </div>
               </div>
               <div className="grid grid-cols-5 gap-2 mb-2">
-                <input
-                  type="number"
-                  placeholder="Planned %"
-                  value={task.plannedPct}
-                  onChange={(e) => updateTask(i, "plannedPct", Number(e.target.value))}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                />
-                <input
-                  type="number"
-                  placeholder="Actual %"
-                  value={task.actualPct}
-                  onChange={(e) => updateTask(i, "actualPct", Number(e.target.value))}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                />
-                <select
-                  value={task.status}
-                  onChange={(e) => updateTask(i, "status", e.target.value)}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                >
-                  <option value="not_started">Not started</option>
-                  <option value="in_progress">In progress</option>
-                  <option value="done">Done</option>
-                </select>
-                <input
-                  type="number"
-                  placeholder="Time planned (h)"
-                  value={task.timePlanned}
-                  onChange={(e) => updateTask(i, "timePlanned", Number(e.target.value))}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                />
-                <input
-                  type="number"
-                  placeholder="Time spent (h)"
-                  value={task.timeSpent}
-                  onChange={(e) => updateTask(i, "timeSpent", Number(e.target.value))}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                />
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Planned %</label>
+                  <input
+                    type="number"
+                    value={task.plannedPct}
+                    onChange={(e) => updateTask(i, "plannedPct", Number(e.target.value))}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Actual %</label>
+                  <input
+                    type="number"
+                    value={task.actualPct}
+                    onChange={(e) => updateTask(i, "actualPct", Number(e.target.value))}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Status</label>
+                  <select
+                    value={task.status}
+                    onChange={(e) => updateTask(i, "status", e.target.value)}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  >
+                    <option value="not_started">Not started</option>
+                    <option value="in_progress">In progress</option>
+                    <option value="done">Done</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Time planned (h)</label>
+                  <input
+                    type="number"
+                    value={task.timePlanned}
+                    onChange={(e) => updateTask(i, "timePlanned", Number(e.target.value))}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Time spent (h)</label>
+                  <input
+                    type="number"
+                    value={task.timeSpent}
+                    onChange={(e) => updateTask(i, "timeSpent", Number(e.target.value))}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  />
+                </div>
               </div>
-              <div className="flex gap-2">
-                <input
-                  placeholder="Output / deliverable"
-                  value={task.output}
-                  onChange={(e) => updateTask(i, "output", e.target.value)}
-                  className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm"
-                />
-                <button onClick={() => removeTask(i)} className="text-xs text-red-500">
+              <div className="flex gap-2 items-end">
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-1">Output / deliverable</label>
+                  <input
+                    placeholder="Output / deliverable"
+                    value={task.output}
+                    onChange={(e) => updateTask(i, "output", e.target.value)}
+                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                  />
+                </div>
+                <button onClick={() => removeTask(i)} className="text-xs text-red-500 pb-1">
                   Remove
                 </button>
               </div>
             </div>
           ))}
         </div>
-
         {/* tasks planned next week */}
         <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
           <h2 className="text-sm font-medium mb-2">Tasks planned for next week</h2>
