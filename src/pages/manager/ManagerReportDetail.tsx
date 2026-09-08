@@ -5,7 +5,6 @@ import ManagerNav from "../../components/ManagerNav";
 import StatusBadge from "../../components/StatusBadge";
 import type { ManagerReportDetail as ReportDetailType } from "../../types";
 
-
 export default function ManagerReportDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -45,9 +44,9 @@ export default function ManagerReportDetail() {
 
   if (!report) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-slate-50">
         <ManagerNav />
-        <p className="p-6 text-sm text-gray-500">Loading...</p>
+        <p className="p-6 text-sm text-slate-500">Loading...</p>
       </div>
     );
   }
@@ -62,41 +61,43 @@ export default function ManagerReportDetail() {
   const tasksPlannedNext = selectedVersion ? viewData.tasksPlannedNext : report.tasks_planned_next;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <ManagerNav />
 
       <div className="max-w-3xl mx-auto p-6">
         <div className="flex items-center justify-between mb-1">
-          <h1 className="text-lg font-semibold">
+          <h1 className="text-lg font-semibold text-slate-900">
             {report.user_name} — Week of {report.week_start} to {report.week_end}
           </h1>
           <StatusBadge status={report.status} />
         </div>
-        <p className="text-sm text-gray-500 mb-4">{report.project_name}</p>
+        <p className="text-sm text-slate-500 mb-4">{report.project_name}</p>
 
         {selectedVersion && (
-          <div className="bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded-md px-4 py-3 mb-4 flex items-center justify-between">
+          <div className="bg-indigo-50 border border-indigo-200 text-indigo-800 text-sm rounded-lg px-4 py-3 mb-4 flex items-center justify-between">
             <span>Viewing version {selectedVersion.version_no}</span>
-            <button onClick={() => setSelectedVersion(null)} className="underline">
+            <button onClick={() => setSelectedVersion(null)} className=" font-medium">
               Back to current
             </button>
           </div>
         )}
 
         {error && (
-          <div className="bg-red-50 text-red-700 text-sm rounded-md px-3 py-2 mb-4">{error}</div>
+          <div className="bg-red-50 border border-red-100 text-red-700 text-sm rounded-lg px-3 py-2 mb-4">
+            {error}
+          </div>
         )}
 
         {/* tasks */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-          <h2 className="text-sm font-medium mb-2">Tasks completed</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-3">Tasks completed</h2>
           {tasks.length === 0 ? (
-            <p className="text-xs text-gray-400">No tasks recorded.</p>
+            <p className="text-xs text-slate-400">No tasks recorded.</p>
           ) : (
             <table className="w-full text-xs">
               <thead>
-                <tr className="text-left text-gray-500">
-                  <th className="py-1">Task</th>
+                <tr className="text-left text-slate-500">
+                  <th className="py-1.5">Task</th>
                   <th>Priority</th>
                   <th>Planned %</th>
                   <th>Actual %</th>
@@ -108,15 +109,15 @@ export default function ManagerReportDetail() {
               </thead>
               <tbody>
                 {tasks.map((t: any, i: number) => (
-                  <tr key={i} className="border-t border-gray-100">
-                    <td className="py-1">{t.task}</td>
-                    <td>{t.priority}</td>
-                    <td>{t.plannedPct}%</td>
-                    <td>{t.actualPct}%</td>
-                    <td>{t.status}</td>
-                    <td>{t.timePlanned}</td>
-                    <td>{t.timeSpent}</td>
-                    <td>{t.output}</td>
+                  <tr key={i} className="border-t border-slate-100">
+                    <td className="py-1.5 text-slate-800">{t.task}</td>
+                    <td className="text-slate-600">{t.priority}</td>
+                    <td className="text-slate-600">{t.plannedPct}%</td>
+                    <td className="text-slate-600">{t.actualPct}%</td>
+                    <td className="text-slate-600">{t.status}</td>
+                    <td className="text-slate-600">{t.timePlanned}</td>
+                    <td className="text-slate-600">{t.timeSpent}</td>
+                    <td className="text-slate-600">{t.output}</td>
                   </tr>
                 ))}
               </tbody>
@@ -124,17 +125,17 @@ export default function ManagerReportDetail() {
           )}
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-          <h2 className="text-sm font-medium mb-2">Planned for next week</h2>
-          <p className="text-sm text-gray-700">{tasksPlannedNext || "—"}</p>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-2">Planned for next week</h2>
+          <p className="text-sm text-slate-700">{tasksPlannedNext || "—"}</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-          <h2 className="text-sm font-medium mb-2">Blockers</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-2">Blockers</h2>
           {blockers.length === 0 ? (
-            <p className="text-xs text-gray-400">None reported.</p>
+            <p className="text-xs text-slate-400">None reported.</p>
           ) : (
-            <ul className="text-sm space-y-1">
+            <ul className="text-sm space-y-1.5 text-slate-700">
               {blockers.map((b: any, i: number) => (
                 <li key={i}>
                   {b.isKey && <span className="text-amber-600 font-medium">Key: </span>}
@@ -145,15 +146,15 @@ export default function ManagerReportDetail() {
           )}
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-          <h2 className="text-sm font-medium mb-2">Achievements</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-2">Achievements</h2>
           {achievements.length === 0 ? (
-            <p className="text-xs text-gray-400">None reported.</p>
+            <p className="text-xs text-slate-400">None reported.</p>
           ) : (
-            <ul className="text-sm space-y-1">
+            <ul className="text-sm space-y-1.5 text-slate-700">
               {achievements.map((a: any, i: number) => (
                 <li key={i}>
-                  {a.isKey && <span className="text-green-600 font-medium">Key: </span>}
+                  {a.isKey && <span className="text-emerald-600 font-medium">Key: </span>}
                   {a.text}
                 </li>
               ))}
@@ -162,9 +163,9 @@ export default function ManagerReportDetail() {
         </div>
 
         {hours.length > 0 && (
-          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-            <h2 className="text-sm font-medium mb-2">Hours by task type</h2>
-            <ul className="text-sm space-y-1">
+          <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+            <h2 className="text-sm font-semibold text-slate-900 mb-2">Hours by task type</h2>
+            <ul className="text-sm space-y-1.5 text-slate-700">
               {hours.map((h: any, i: number) => (
                 <li key={i}>
                   {h.type}: {h.hours}h
@@ -175,35 +176,35 @@ export default function ManagerReportDetail() {
         )}
 
         {notes && (
-          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-            <h2 className="text-sm font-medium mb-2">Notes</h2>
-            <p className="text-sm text-gray-700">{notes}</p>
+          <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+            <h2 className="text-sm font-semibold text-slate-900 mb-2">Notes</h2>
+            <p className="text-sm text-slate-700">{notes}</p>
           </div>
         )}
 
         {/* review action - only when submitted and viewing current version */}
         {report.status === "submitted" && !selectedVersion && (
-          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-            <h2 className="text-sm font-medium mb-2">Review this report</h2>
+          <div className="bg-white border border-indigo-200 rounded-xl p-4 mb-4 shadow-sm ring-1 ring-indigo-50">
+            <h2 className="text-sm font-semibold text-slate-900 mb-2">Review this report</h2>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Comment (required if requesting changes)"
               rows={3}
-              className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm mb-3"
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
             <div className="flex gap-3">
               <button
                 onClick={() => handleReview("approved")}
                 disabled={saving}
-                className="bg-green-700 text-white text-sm px-4 py-2 rounded-md disabled:opacity-50"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition disabled:opacity-50"
               >
                 Approve
               </button>
               <button
                 onClick={() => handleReview("changes_requested")}
                 disabled={saving}
-                className="bg-amber-600 text-white text-sm px-4 py-2 rounded-md disabled:opacity-50"
+                className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition disabled:opacity-50"
               >
                 Request changes
               </button>
@@ -213,19 +214,21 @@ export default function ManagerReportDetail() {
 
         {/* comment history */}
         {report.comments.length > 0 && (
-          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-            <h2 className="text-sm font-medium mb-2">Review comment history</h2>
-            <ul className="text-sm space-y-2">
+          <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+            <h2 className="text-sm font-semibold text-slate-900 mb-2">Review comment history</h2>
+            <ul className="text-sm space-y-2.5">
               {report.comments.map((c) => (
-                <li key={c.id} className="border-t border-gray-100 pt-2 first:border-0 first:pt-0">
-                  <div className="flex justify-between text-xs text-gray-500">
+                <li key={c.id} className="border-t border-slate-100 pt-2.5 first:border-0 first:pt-0">
+                  <div className="flex justify-between text-xs text-slate-500">
                     <span>
                       {c.manager_name} — v{c.version_no} —{" "}
-                      {c.action === "approved" ? "Approved" : "Requested changes"}
+                      <span className={c.action === "approved" ? "text-emerald-600" : "text-amber-600"}>
+                        {c.action === "approved" ? "Approved" : "Requested changes"}
+                      </span>
                     </span>
                     <span>{new Date(c.created_at).toLocaleString()}</span>
                   </div>
-                  {c.comment && <p className="text-sm mt-1">{c.comment}</p>}
+                  {c.comment && <p className="text-sm text-slate-700 mt-1">{c.comment}</p>}
                 </li>
               ))}
             </ul>
@@ -234,17 +237,17 @@ export default function ManagerReportDetail() {
 
         {/* version history */}
         {report.versions.length > 0 && (
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <h2 className="text-sm font-medium mb-2">Version history</h2>
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+            <h2 className="text-sm font-semibold text-slate-900 mb-2">Version history</h2>
             <ul className="text-sm space-y-2">
               {report.versions.map((v) => (
-                <li key={v.id} className="flex items-center justify-between">
+                <li key={v.id} className="flex items-center justify-between text-slate-700">
                   <span>
                     Version {v.version_no} — submitted {new Date(v.submitted_at).toLocaleString()}
                   </span>
                   <button
                     onClick={() => setSelectedVersion(v)}
-                    className="text-xs text-blue-600 underline"
+                    className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
                   >
                     View
                   </button>

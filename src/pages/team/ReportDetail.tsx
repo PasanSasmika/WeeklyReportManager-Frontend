@@ -108,7 +108,7 @@ export default function ReportDetail() {
               Viewing version {selectedVersion.version_no} (submitted{" "}
               {new Date(selectedVersion.submitted_at).toLocaleString()})
             </span>
-            <button onClick={() => setSelectedVersion(null)} className="underline">
+            <button onClick={() => setSelectedVersion(null)} className="">
               Back to current
             </button>
           </div>

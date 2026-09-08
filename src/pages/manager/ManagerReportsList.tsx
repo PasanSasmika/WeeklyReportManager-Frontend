@@ -40,7 +40,6 @@ export default function ManagerReportsList() {
 
   const limit = 10;
 
-  // load filter dropdown data once
   useEffect(() => {
     api.get("/projects", { params: { limit: 50 } }).then((res) => setProjects(res.data.data));
     api.get("/users", { params: { role: "team_member", limit: 50 } }).then((res) =>
@@ -48,7 +47,6 @@ export default function ManagerReportsList() {
     );
   }, []);
 
-  // reload reports whenever a filter or page changes
   useEffect(() => {
     loadReports();
   }, [status, projectId, userId, weekStart, weekEnd, page]);
@@ -78,20 +76,20 @@ export default function ManagerReportsList() {
   const totalPages = Math.max(Math.ceil(total / limit), 1);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <ManagerNav />
 
       <div className="max-w-5xl mx-auto p-6">
-        <h1 className="text-lg font-semibold mb-4">Team reports</h1>
+        <h1 className="text-xl font-semibold text-slate-900 mb-5">Team reports</h1>
 
         {/* filters */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4 flex flex-wrap gap-3 items-end">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 flex flex-wrap gap-3 items-end shadow-sm">
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Team member</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Team member</label>
             <select
               value={userId}
               onChange={(e) => { setUserId(e.target.value); setPage(1); }}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="">All members</option>
               {members.map((m) => (
@@ -101,11 +99,11 @@ export default function ManagerReportsList() {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Project</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Project</label>
             <select
               value={projectId}
               onChange={(e) => { setProjectId(e.target.value); setPage(1); }}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="">All projects</option>
               {projects.map((p) => (
@@ -115,11 +113,11 @@ export default function ManagerReportsList() {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Status</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Status</label>
             <select
               value={status}
               onChange={(e) => { setStatus(e.target.value as ReportStatus | ""); setPage(1); }}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               {STATUS_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -128,56 +126,62 @@ export default function ManagerReportsList() {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Week start from</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Week start from</label>
             <input
               type="date"
               value={weekStart}
               onChange={(e) => { setWeekStart(e.target.value); setPage(1); }}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Week end to</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Week end to</label>
             <input
               type="date"
               value={weekEnd}
               onChange={(e) => { setWeekEnd(e.target.value); setPage(1); }}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
-          <button onClick={resetFilters} className="text-xs text-gray-500 underline pb-1">
+          <button
+            onClick={resetFilters}
+            className="text-xs font-medium text-indigo-600 hover:text-indigo-700 pb-2"
+          >
             Clear filters
           </button>
         </div>
 
         {/* results table */}
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-slate-500">Loading...</p>
         ) : reports.length === 0 ? (
-          <p className="text-sm text-gray-500">No reports match these filters.</p>
+          <p className="text-sm text-slate-500">No reports match these filters.</p>
         ) : (
-          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-left text-xs text-gray-500">
+              <thead className="bg-slate-50 text-left text-xs font-medium text-slate-500 uppercase tracking-wide">
                 <tr>
-                  <th className="px-4 py-2">Member</th>
-                  <th className="px-4 py-2">Project</th>
-                  <th className="px-4 py-2">Week</th>
-                  <th className="px-4 py-2">Status</th>
-                  <th className="px-4 py-2"></th>
+                  <th className="px-4 py-2.5">Member</th>
+                  <th className="px-4 py-2.5">Project</th>
+                  <th className="px-4 py-2.5">Week</th>
+                  <th className="px-4 py-2.5">Status</th>
+                  <th className="px-4 py-2.5"></th>
                 </tr>
               </thead>
               <tbody>
                 {reports.map((r) => (
-                  <tr key={r.id} className="border-t border-gray-100">
-                    <td className="px-4 py-2">{r.user_name}</td>
-                    <td className="px-4 py-2">{r.project_name}</td>
-                    <td className="px-4 py-2">{r.week_start} - {r.week_end}</td>
-                    <td className="px-4 py-2"><StatusBadge status={r.status} /></td>
-                    <td className="px-4 py-2 text-right">
-                      <Link to={`/manager/reports/${r.id}`} className="text-blue-600 text-xs underline">
+                  <tr key={r.id} className="border-t border-slate-100 hover:bg-slate-50/60 transition">
+                    <td className="px-4 py-2.5 text-slate-800 font-medium">{r.user_name}</td>
+                    <td className="px-4 py-2.5 text-slate-600">{r.project_name}</td>
+                    <td className="px-4 py-2.5 text-slate-600">{r.week_start} - {r.week_end}</td>
+                    <td className="px-4 py-2.5"><StatusBadge status={r.status} /></td>
+                    <td className="px-4 py-2.5 text-right">
+                      <Link
+                        to={`/manager/reports/${r.id}`}
+                        className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
+                      >
                         {r.status === "submitted" ? "Review" : "View"}
                       </Link>
                     </td>
@@ -193,15 +197,15 @@ export default function ManagerReportsList() {
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-40"
+              className="px-3 py-1.5 border border-slate-300 rounded-lg disabled:opacity-40 hover:bg-slate-50 transition"
             >
               Previous
             </button>
-            <span className="text-gray-500">Page {page} of {totalPages}</span>
+            <span className="text-slate-500">Page {page} of {totalPages}</span>
             <button
               disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-40"
+              className="px-3 py-1.5 border border-slate-300 rounded-lg disabled:opacity-40 hover:bg-slate-50 transition"
             >
               Next
             </button>
