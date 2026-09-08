@@ -35,7 +35,7 @@ export default function ManagerReportDetail() {
     setSaving(true);
     try {
       await api.post(`/report/team/${id}/review`, { action, comment });
-      navigate("/manager/report");
+      navigate("/manager/reports");
     } catch (err: any) {
       setError(err.response?.data?.error?.message || "Failed to submit review.");
     } finally {
