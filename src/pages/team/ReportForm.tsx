@@ -4,7 +4,6 @@ import api from "../../api/client";
 import TeamNav from "../../components/TeamNav";
 import type { AchievementItem, BlockerItem, HoursItem, Project, TaskItem } from "../../types";
 
-
 const EMPTY_TASK: TaskItem = {
   task: "",
   priority: "medium",
@@ -17,7 +16,7 @@ const EMPTY_TASK: TaskItem = {
 };
 
 export default function ReportForm() {
-  const { id } = useParams(); // present only in edit mode
+  const { id } = useParams();
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
 
@@ -36,13 +35,10 @@ export default function ReportForm() {
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // load project list always
   useEffect(() => {
     api.get("/projects", { params: { limit: 50 } }).then((res) => setProjects(res.data.data));
   }, []);
 
-  // load existing report if editing
-   // load existing report if editing
   useEffect(() => {
     if (!isEditMode) return;
     api.get(`/report/${id}`).then((res) => {
@@ -83,7 +79,7 @@ export default function ReportForm() {
     return "";
   }
 
-    async function handleSaveDraft() {
+  async function handleSaveDraft() {
     const validationError = validate();
     if (validationError) return setError(validationError);
 
@@ -103,7 +99,7 @@ export default function ReportForm() {
     }
   }
 
-    async function handleSubmit() {
+  async function handleSubmit() {
     const validationError = validate();
     if (validationError) return setError(validationError);
 
@@ -126,7 +122,6 @@ export default function ReportForm() {
     }
   }
 
-  // ---- task row helpers ----
   function updateTask(index: number, field: keyof TaskItem, value: any) {
     setTasks((prev) => prev.map((t, i) => (i === index ? { ...t, [field]: value } : t)));
   }
@@ -137,7 +132,6 @@ export default function ReportForm() {
     setTasks((prev) => prev.filter((_, i) => i !== index));
   }
 
-  // ---- blocker helpers ----
   function addBlocker() {
     setBlockers((prev) => [...prev, { text: "", isKey: false }]);
   }
@@ -151,7 +145,6 @@ export default function ReportForm() {
     setBlockers((prev) => prev.filter((_, i) => i !== index));
   }
 
-  // ---- achievement helpers ----
   function addAchievement() {
     setAchievements((prev) => [...prev, { text: "", isKey: false }]);
   }
@@ -165,7 +158,6 @@ export default function ReportForm() {
     setAchievements((prev) => prev.filter((_, i) => i !== index));
   }
 
-  // ---- hours helpers ----
   function addHoursRow() {
     setHours((prev) => [...prev, { type: "Development", hours: 0 }]);
   }
@@ -177,50 +169,52 @@ export default function ReportForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <TeamNav />
 
       <div className="max-w-3xl mx-auto p-6">
-        <h1 className="text-lg font-semibold mb-4">
+        <h1 className="text-xl font-semibold text-slate-900 mb-5">
           {isEditMode ? "Edit weekly report" : "New weekly report"}
         </h1>
 
         {correctionComment && (
-          <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-md px-4 py-3 mb-4">
+          <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg px-4 py-3 mb-4">
             <strong>Manager's comment:</strong> {correctionComment}
           </div>
         )}
 
         {error && (
-          <div className="bg-red-50 text-red-700 text-sm rounded-md px-3 py-2 mb-4">{error}</div>
+          <div className="bg-red-50 border border-red-100 text-red-700 text-sm rounded-lg px-3 py-2 mb-4">
+            {error}
+          </div>
         )}
 
         {/* week + project */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4 grid grid-cols-3 gap-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 grid grid-cols-3 gap-4 shadow-sm">
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Week start</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Week start</label>
             <input
               type="date"
               value={weekStart}
               onChange={(e) => setWeekStart(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             />
           </div>
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Week end</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Week end</label>
             <input
               type="date"
               value={weekEnd}
               onChange={(e) => setWeekEnd(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             />
           </div>
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Project</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Project</label>
             <select
               value={projectId}
               onChange={(e) => setProjectId(Number(e.target.value))}
-              className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             >
               <option value="">Select project</option>
               {projects.map((p) => (
@@ -233,32 +227,31 @@ export default function ReportForm() {
         </div>
 
         {/* tasks table */}
-              {/* tasks table */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-sm font-medium">Tasks completed</h2>
-            <button onClick={addTask} className="text-xs text-blue-600">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-slate-900">Tasks completed</h2>
+            <button onClick={addTask} className="text-xs font-medium text-indigo-600 hover:text-indigo-700">
               + Add task
             </button>
           </div>
           {tasks.map((task, i) => (
-            <div key={i} className="border border-gray-100 rounded-md p-3 mb-2">
+            <div key={i} className="border border-slate-200 rounded-lg p-3 mb-2 bg-slate-50/40">
               <div className="grid grid-cols-2 gap-2 mb-2">
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Task name</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Task name</label>
                   <input
                     placeholder="Task name"
                     value={task.task}
                     onChange={(e) => updateTask(i, "task", e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Priority</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Priority</label>
                   <select
                     value={task.priority}
                     onChange={(e) => updateTask(i, "priority", e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   >
                     <option value="low">Low priority</option>
                     <option value="medium">Medium priority</option>
@@ -268,29 +261,29 @@ export default function ReportForm() {
               </div>
               <div className="grid grid-cols-5 gap-2 mb-2">
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Planned %</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Planned %</label>
                   <input
                     type="number"
                     value={task.plannedPct}
                     onChange={(e) => updateTask(i, "plannedPct", Number(e.target.value))}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Actual %</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Actual %</label>
                   <input
                     type="number"
                     value={task.actualPct}
                     onChange={(e) => updateTask(i, "actualPct", Number(e.target.value))}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Status</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Status</label>
                   <select
                     value={task.status}
                     onChange={(e) => updateTask(i, "status", e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   >
                     <option value="not_started">Not started</option>
                     <option value="in_progress">In progress</option>
@@ -298,57 +291,58 @@ export default function ReportForm() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Time planned (h)</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Time planned (h)</label>
                   <input
                     type="number"
                     value={task.timePlanned}
                     onChange={(e) => updateTask(i, "timePlanned", Number(e.target.value))}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Time spent (h)</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Time spent (h)</label>
                   <input
                     type="number"
                     value={task.timeSpent}
                     onChange={(e) => updateTask(i, "timeSpent", Number(e.target.value))}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   />
                 </div>
               </div>
               <div className="flex gap-2 items-end">
                 <div className="flex-1">
-                  <label className="block text-xs text-gray-500 mb-1">Output / deliverable</label>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Output / deliverable</label>
                   <input
                     placeholder="Output / deliverable"
                     value={task.output}
                     onChange={(e) => updateTask(i, "output", e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+                    className="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                   />
                 </div>
-                <button onClick={() => removeTask(i)} className="text-xs text-red-500 pb-1">
+                <button onClick={() => removeTask(i)} className="text-xs font-medium text-rose-500 hover:text-rose-600 pb-2">
                   Remove
                 </button>
               </div>
             </div>
           ))}
         </div>
+
         {/* tasks planned next week */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-          <h2 className="text-sm font-medium mb-2">Tasks planned for next week</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-2">Tasks planned for next week</h2>
           <textarea
             value={tasksPlannedNext}
             onChange={(e) => setTasksPlannedNext(e.target.value)}
             rows={3}
-            className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
           />
         </div>
 
         {/* blockers */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-sm font-medium">Blockers / challenges</h2>
-            <button onClick={addBlocker} className="text-xs text-blue-600">
+            <h2 className="text-sm font-semibold text-slate-900">Blockers / challenges</h2>
+            <button onClick={addBlocker} className="text-xs font-medium text-indigo-600 hover:text-indigo-700">
               + Add blocker
             </button>
           </div>
@@ -360,28 +354,29 @@ export default function ReportForm() {
                 checked={b.isKey}
                 onChange={() => setKeyBlocker(i)}
                 title="Mark as key blocker"
+                className="accent-indigo-600"
               />
               <input
                 value={b.text}
                 onChange={(e) => updateBlocker(i, "text", e.target.value)}
                 placeholder="Describe the blocker"
-                className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm"
+                className="flex-1 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               />
-              <button onClick={() => removeBlocker(i)} className="text-xs text-red-500">
+              <button onClick={() => removeBlocker(i)} className="text-xs font-medium text-rose-500 hover:text-rose-600">
                 Remove
               </button>
             </div>
           ))}
           {blockers.length > 0 && (
-            <p className="text-xs text-gray-400">Select the radio button to mark the key blocker.</p>
+            <p className="text-xs text-slate-400">Select the radio button to mark the key blocker.</p>
           )}
         </div>
 
         {/* achievements */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-sm font-medium">Achievements / highlights</h2>
-            <button onClick={addAchievement} className="text-xs text-blue-600">
+            <h2 className="text-sm font-semibold text-slate-900">Achievements / highlights</h2>
+            <button onClick={addAchievement} className="text-xs font-medium text-indigo-600 hover:text-indigo-700">
               + Add achievement
             </button>
           </div>
@@ -393,28 +388,29 @@ export default function ReportForm() {
                 checked={a.isKey}
                 onChange={() => setKeyAchievement(i)}
                 title="Mark as key achievement"
+                className="accent-indigo-600"
               />
               <input
                 value={a.text}
                 onChange={(e) => updateAchievement(i, "text", e.target.value)}
                 placeholder="Describe the achievement"
-                className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm"
+                className="flex-1 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               />
-              <button onClick={() => removeAchievement(i)} className="text-xs text-red-500">
+              <button onClick={() => removeAchievement(i)} className="text-xs font-medium text-rose-500 hover:text-rose-600">
                 Remove
               </button>
             </div>
           ))}
           {achievements.length > 0 && (
-            <p className="text-xs text-gray-400">Select the radio button to mark the key achievement.</p>
+            <p className="text-xs text-slate-400">Select the radio button to mark the key achievement.</p>
           )}
         </div>
 
         {/* hours breakdown - optional */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-sm font-medium">Hours by task type (optional)</h2>
-            <button onClick={addHoursRow} className="text-xs text-blue-600">
+            <h2 className="text-sm font-semibold text-slate-900">Hours by task type (optional)</h2>
+            <button onClick={addHoursRow} className="text-xs font-medium text-indigo-600 hover:text-indigo-700">
               + Add row
             </button>
           </div>
@@ -423,7 +419,7 @@ export default function ReportForm() {
               <select
                 value={h.type}
                 onChange={(e) => updateHoursRow(i, "type", e.target.value)}
-                className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+                className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               >
                 <option>Development</option>
                 <option>Testing</option>
@@ -434,9 +430,9 @@ export default function ReportForm() {
                 type="number"
                 value={h.hours}
                 onChange={(e) => updateHoursRow(i, "hours", Number(e.target.value))}
-                className="w-24 border border-gray-300 rounded-md px-2 py-1 text-sm"
+                className="w-24 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               />
-              <button onClick={() => removeHoursRow(i)} className="text-xs text-red-500">
+              <button onClick={() => removeHoursRow(i)} className="text-xs font-medium text-rose-500 hover:text-rose-600">
                 Remove
               </button>
             </div>
@@ -444,28 +440,28 @@ export default function ReportForm() {
         </div>
 
         {/* notes */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-          <h2 className="text-sm font-medium mb-2">Notes or links (optional)</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-2">Notes or links (optional)</h2>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={2}
-            className="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
+            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
           />
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 pb-8">
           <button
             onClick={handleSaveDraft}
             disabled={saving}
-            className="border border-gray-300 rounded-md px-4 py-2 text-sm disabled:opacity-50"
+            className="border border-slate-300 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition disabled:opacity-50"
           >
             Save as draft
           </button>
           <button
             onClick={handleSubmit}
             disabled={saving}
-            className="bg-gray-900 text-white rounded-md px-4 py-2 text-sm disabled:opacity-50"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-4 py-2 text-sm font-medium shadow-sm shadow-indigo-200 transition disabled:opacity-50"
           >
             Submit for review
           </button>
