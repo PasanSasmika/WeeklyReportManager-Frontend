@@ -77,20 +77,22 @@ export default function ManagerProjects() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <ManagerNav />
 
       <div className="max-w-3xl mx-auto p-6">
-        <h1 className="text-lg font-semibold mb-4">Projects</h1>
+        <h1 className="text-xl font-semibold text-slate-900 mb-5">Projects</h1>
 
         {/* add / edit form */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-          <h2 className="text-sm font-medium mb-2">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-3">
             {editingId ? "Edit project" : "Add new project"}
           </h2>
 
           {error && (
-            <div className="bg-red-50 text-red-700 text-sm rounded-md px-3 py-2 mb-3">{error}</div>
+            <div className="bg-red-50 border border-red-100 text-red-700 text-sm rounded-lg px-3 py-2 mb-3">
+              {error}
+            </div>
           )}
 
           <div className="grid grid-cols-2 gap-3 mb-3">
@@ -98,13 +100,13 @@ export default function ManagerProjects() {
               placeholder="Project name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
             <input
               placeholder="Description (optional)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
           </div>
 
@@ -112,12 +114,15 @@ export default function ManagerProjects() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="bg-gray-900 text-white text-sm px-4 py-2 rounded-md disabled:opacity-50"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm shadow-indigo-200 transition disabled:opacity-50"
             >
               {editingId ? "Save changes" : "Add project"}
             </button>
             {editingId && (
-              <button onClick={startAdd} className="text-sm text-gray-500 px-4 py-2">
+              <button
+                onClick={startAdd}
+                className="text-sm text-slate-500 hover:text-slate-700 px-4 py-2 transition"
+              >
                 Cancel
               </button>
             )}
@@ -126,32 +131,32 @@ export default function ManagerProjects() {
 
         {/* project list */}
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-slate-500">Loading...</p>
         ) : (
-          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-left text-xs text-gray-500">
+              <thead className="bg-slate-50 text-left text-xs font-medium text-slate-500 uppercase tracking-wide">
                 <tr>
-                  <th className="px-4 py-2">Name</th>
-                  <th className="px-4 py-2">Description</th>
-                  <th className="px-4 py-2"></th>
+                  <th className="px-4 py-2.5">Name</th>
+                  <th className="px-4 py-2.5">Description</th>
+                  <th className="px-4 py-2.5"></th>
                 </tr>
               </thead>
               <tbody>
                 {projects.map((p) => (
-                  <tr key={p.id} className="border-t border-gray-100">
-                    <td className="px-4 py-2">{p.name}</td>
-                    <td className="px-4 py-2 text-gray-500">{p.description || "—"}</td>
-                    <td className="px-4 py-2 text-right space-x-3">
+                  <tr key={p.id} className="border-t border-slate-100 hover:bg-slate-50/60 transition">
+                    <td className="px-4 py-2.5 text-slate-900 font-medium">{p.name}</td>
+                    <td className="px-4 py-2.5 text-slate-500">{p.description || "—"}</td>
+                    <td className="px-4 py-2.5 text-right space-x-4">
                       <button
                         onClick={() => startEdit(p)}
-                        className="text-xs text-blue-600 underline"
+                        className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(p.id)}
-                        className="text-xs text-red-500 underline"
+                        className="text-xs font-medium text-rose-500 hover:text-rose-600"
                       >
                         Delete
                       </button>

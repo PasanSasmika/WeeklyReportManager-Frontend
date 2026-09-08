@@ -30,7 +30,7 @@ interface ActivityItem {
   timestamp: string;
 }
 
-const PIE_COLORS = ["#4B5563", "#9CA3AF", "#D1D5DB", "#6B7280", "#111827"];
+const PIE_COLORS = ["#6366F1", "#A5B4FC", "#C7D2FE", "#818CF8", "#4338CA"];
 
 export default function ManagerDashboard() {
   const [weekRange, setWeekRange] = useState(getCurrentWeekRange());
@@ -74,25 +74,25 @@ export default function ManagerDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <ManagerNav />
 
       <div className="max-w-5xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-lg font-semibold">Team dashboard</h1>
-          <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center justify-between mb-5">
+          <h1 className="text-xl font-semibold text-slate-900">Team dashboard</h1>
+          <div className="flex items-center gap-2 text-sm bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-sm">
             <input
               type="date"
               value={weekRange.start}
               onChange={(e) => setWeekRange((w) => ({ ...w, start: e.target.value }))}
-              className="border border-gray-300 rounded-md px-2 py-1"
+              className="border-none text-slate-700 focus:outline-none"
             />
-            <span className="text-gray-400">to</span>
+            <span className="text-slate-300">→</span>
             <input
               type="date"
               value={weekRange.end}
               onChange={(e) => setWeekRange((w) => ({ ...w, end: e.target.value }))}
-              className="border border-gray-300 rounded-md px-2 py-1"
+              className="border-none text-slate-700 focus:outline-none"
             />
           </div>
         </div>
@@ -102,8 +102,8 @@ export default function ManagerDashboard() {
           <div className="grid grid-cols-4 gap-4 mb-6">
             <SummaryCard label="Reports submitted" value={summary.reportsSubmitted} />
             <SummaryCard label="Compliance rate" value={`${summary.complianceRate}%`} />
-            <SummaryCard label="Needs correction" value={summary.needsCorrectionCount} />
-            <SummaryCard label="Open blockers" value={summary.openBlockers} />
+            <SummaryCard label="Needs correction" value={summary.needsCorrectionCount} accent="amber" />
+            <SummaryCard label="Open blockers" value={summary.openBlockers} accent="rose" />
           </div>
         )}
 
@@ -112,10 +112,10 @@ export default function ManagerDashboard() {
           <ChartCard title="Tasks completed trend">
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={tasksTrend}>
-                <XAxis dataKey="week" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
-                <Tooltip />
-                <Line type="monotone" dataKey="tasksCompleted" stroke="#111827" strokeWidth={2} />
+                <XAxis dataKey="week" tick={{ fontSize: 11, fill: "#64748B" }} />
+                <YAxis tick={{ fontSize: 11, fill: "#64748B" }} />
+                <Tooltip contentStyle={{ borderRadius: 8, borderColor: "#E2E8F0", fontSize: 13 }} />
+                <Line type="monotone" dataKey="tasksCompleted" stroke="#4F46E5" strokeWidth={2.5} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </ChartCard>
@@ -123,10 +123,10 @@ export default function ManagerDashboard() {
           <ChartCard title="Status by team member">
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={statusCounts}>
-                <XAxis dataKey="status" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
-                <Tooltip />
-                <Bar dataKey="count" fill="#374151" />
+                <XAxis dataKey="status" tick={{ fontSize: 10, fill: "#64748B" }} />
+                <YAxis tick={{ fontSize: 11, fill: "#64748B" }} allowDecimals={false} />
+                <Tooltip contentStyle={{ borderRadius: 8, borderColor: "#E2E8F0", fontSize: 13 }} />
+                <Bar dataKey="count" fill="#6366F1" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartCard>
@@ -145,7 +145,7 @@ export default function ManagerDashboard() {
                     <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={{ borderRadius: 8, borderColor: "#E2E8F0", fontSize: 13 }} />
               </PieChart>
             </ResponsiveContainer>
           </ChartCard>
@@ -153,26 +153,26 @@ export default function ManagerDashboard() {
           <ChartCard title="Time by task type">
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={timeByType}>
-                <XAxis dataKey="type" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 11 }} />
-                <Tooltip />
-                <Bar dataKey="hours" fill="#4B5563" />
+                <XAxis dataKey="type" tick={{ fontSize: 10, fill: "#64748B" }} />
+                <YAxis tick={{ fontSize: 11, fill: "#64748B" }} />
+                <Tooltip contentStyle={{ borderRadius: 8, borderColor: "#E2E8F0", fontSize: 13 }} />
+                <Bar dataKey="hours" fill="#818CF8" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartCard>
         </div>
 
         {/* activity feed */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <h2 className="text-sm font-medium mb-2">Recent activity</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-3">Recent activity</h2>
           {activity.length === 0 ? (
-            <p className="text-xs text-gray-400">No recent activity.</p>
+            <p className="text-xs text-slate-400">No recent activity.</p>
           ) : (
-            <ul className="text-sm space-y-2">
+            <ul className="text-sm space-y-2.5">
               {activity.map((a, i) => (
-                <li key={i} className="flex justify-between border-b border-gray-100 pb-1 last:border-0">
-                  <span>{a.message}</span>
-                  <span className="text-xs text-gray-400">
+                <li key={i} className="flex justify-between border-b border-slate-100 pb-2.5 last:border-0 last:pb-0">
+                  <span className="text-slate-700">{a.message}</span>
+                  <span className="text-xs text-slate-400 whitespace-nowrap ml-3">
                     {new Date(a.timestamp).toLocaleDateString()}
                   </span>
                 </li>
@@ -185,19 +185,33 @@ export default function ManagerDashboard() {
   );
 }
 
-function SummaryCard({ label, value }: { label: string; value: string | number }) {
+function SummaryCard({
+  label,
+  value,
+  accent = "indigo",
+}: {
+  label: string;
+  value: string | number;
+  accent?: "indigo" | "amber" | "rose";
+}) {
+  const accentStyles = {
+    indigo: "text-indigo-600",
+    amber: "text-amber-600",
+    rose: "text-rose-600",
+  };
+
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4">
-      <p className="text-xs text-gray-500">{label}</p>
-      <p className="text-xl font-semibold">{value}</p>
+    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+      <p className="text-xs font-medium text-slate-500 mb-1">{label}</p>
+      <p className={`text-2xl font-semibold ${accentStyles[accent]}`}>{value}</p>
     </div>
   );
 }
 
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4">
-      <h2 className="text-sm font-medium mb-2">{title}</h2>
+    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-900 mb-2">{title}</h2>
       {children}
     </div>
   );
