@@ -31,32 +31,34 @@ export default function ReportForm() {
   const [hours, setHours] = useState<HoursItem[]>([]);
   const [notes, setNotes] = useState("");
 
-  const [correctionComment, setCorrectionComment] = useState("");
-  const [error, setError] = useState("");
-  const [saving, setSaving] = useState(false);
+const [correctionComment, setCorrectionComment] = useState("");
+const [reportStatus, setReportStatus] = useState<string>("draft");
+const [error, setError] = useState("");
+const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     api.get("/projects", { params: { limit: 50 } }).then((res) => setProjects(res.data.data));
   }, []);
 
-  useEffect(() => {
-    if (!isEditMode) return;
-    api.get(`/report/${id}`).then((res) => {
-      const r = res.data.data;
-      setProjectId(r.project_id);
-      setWeekStart(r.week_start.slice(0, 10));
-      setWeekEnd(r.week_end.slice(0, 10));
-      setTasks(r.tasks_completed || []);
-      setTasksPlannedNext(r.tasks_planned_next || "");
-      setBlockers(r.blockers || []);
-      setAchievements(r.achievements || []);
-      setHours(r.hours_breakdown || []);
-      setNotes(r.notes || "");
-      if (r.latestComment && r.status === "needs_correction") {
-        setCorrectionComment(r.latestComment.comment);
-      }
-    });
-  }, [id]);
+useEffect(() => {
+  if (!isEditMode) return;
+  api.get(`/report/${id}`).then((res) => {
+    const r = res.data.data;
+    setProjectId(r.project_id);
+    setWeekStart(r.week_start.slice(0, 10));
+    setWeekEnd(r.week_end.slice(0, 10));
+    setTasks(r.tasks_completed || []);
+    setTasksPlannedNext(r.tasks_planned_next || "");
+    setBlockers(r.blockers || []);
+    setAchievements(r.achievements || []);
+    setHours(r.hours_breakdown || []);
+    setNotes(r.notes || "");
+    setReportStatus(r.status);
+    if (r.latestComment && r.status === "needs_correction") {
+      setCorrectionComment(r.latestComment.comment);
+    }
+  });
+}, [id]);
 
   function buildPayload() {
     return {
@@ -451,21 +453,23 @@ export default function ReportForm() {
         </div>
 
         <div className="flex gap-3 pb-8">
-          <button
-            onClick={handleSaveDraft}
-            disabled={saving}
-            className="border border-slate-300 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition disabled:opacity-50"
-          >
-            Save as draft
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={saving}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-4 py-2 text-sm font-medium shadow-sm shadow-indigo-200 transition disabled:opacity-50"
-          >
-            Submit for review
-          </button>
-        </div>
+  {reportStatus !== "needs_correction" && (
+    <button
+      onClick={handleSaveDraft}
+      disabled={saving}
+      className="border border-slate-300 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition disabled:opacity-50"
+    >
+      Save as draft
+    </button>
+  )}
+  <button
+    onClick={handleSubmit}
+    disabled={saving}
+    className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-4 py-2 text-sm font-medium shadow-sm shadow-indigo-200 transition disabled:opacity-50"
+  >
+    {reportStatus === "needs_correction" ? "Resubmit for review" : "Submit for review"}
+  </button>
+</div>
       </div>
     </div>
   );
