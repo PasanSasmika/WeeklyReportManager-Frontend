@@ -51,7 +51,7 @@ export default function ManagerAuditLog() {
   async function loadLog() {
     setLoading(true);
     try {
-      const res = await api.get("/dashboard/audit-log", { params: { page, limit } });
+      const res = await api.get("/audit", { params: { page, limit } });
       setEntries(res.data.data);
       setTotal(res.data.meta.total);
     } finally {
