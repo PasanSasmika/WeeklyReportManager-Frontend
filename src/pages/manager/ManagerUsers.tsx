@@ -3,6 +3,7 @@ import api from "../../api/client";
 import ManagerNav from "../../components/ManagerNav";
 import type { Role, User } from "../../types";
 import { useAuth } from "../../context/authContext";
+import { Link } from "react-router-dom";
 
 export default function ManagerUsers() {
   const { user: currentUser } = useAuth();
@@ -148,7 +149,14 @@ export default function ManagerUsers() {
               <tbody>
                 {users.map((u) => (
                   <tr key={u.id} className="border-t border-gray-100">
-                    <td className="px-4 py-2">{u.name}</td>
+                 <td className="px-4 py-2.5">
+  <Link
+    to={`/manager/members/${u.id}`}
+    className="font-medium text-slate-800 hover:text-indigo-600 transition"
+  >
+    {u.name}
+  </Link>
+</td>
                     <td className="px-4 py-2 text-gray-500">{u.email}</td>
                     <td className="px-4 py-2">
                       <select
