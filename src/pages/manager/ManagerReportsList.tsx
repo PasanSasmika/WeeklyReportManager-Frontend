@@ -172,16 +172,6 @@ export default function ManagerReportsList() {
               </thead>
               <tbody>
                 {reports.map((r) => (
-                  <tr key={r.id} className="border-t border-slate-100 hover:bg-slate-50/60 transition">
-                    <td className="px-4 py-2.5 text-slate-800 font-medium">{r.user_name}</td>
-                    <td className="px-4 py-2.5 text-slate-600">{r.project_name}</td>
-                    <td className="px-4 py-2.5 text-slate-600">{r.week_start} - {r.week_end}</td>
-                    <td className="px-4 py-2.5"><StatusBadge status={r.status} /></td>
-                    <td className="px-4 py-2.5 text-right">
-                      <Link
-                        to={`/manager/reports/${r.id}`}
-                        className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
-                      >
                         {r.status === "submitted" ? "Review" : "View"}
                       </Link>
                     </td>

@@ -3,6 +3,7 @@ import api from "../../api/client";
 import ManagerNav from "../../components/ManagerNav";
 import type { Role, User } from "../../types";
 import { useAuth } from "../../context/authContext";
+import { Link } from "react-router-dom";
 
 export default function ManagerUsers() {
   const { user: currentUser } = useAuth();
@@ -148,10 +149,6 @@ export default function ManagerUsers() {
               </thead>
               <tbody>
                 {users.map((u) => (
-                  <tr key={u.id} className="border-t border-slate-100 hover:bg-slate-50/60 transition">
-                    <td className="px-4 py-2.5 text-slate-800 font-medium">{u.name}</td>
-                    <td className="px-4 py-2.5 text-slate-500">{u.email}</td>
-                    <td className="px-4 py-2.5">
                       <select
                         value={u.role}
                         onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
