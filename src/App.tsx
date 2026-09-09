@@ -12,6 +12,7 @@ import ManagerReportsList from "./pages/manager/ManagerReportsList";
 import ManagerProjects from "./pages/manager/ManagerProjects";
 import ManagerUsers from "./pages/manager/ManagerUsers";
 import ManagerMemberProfile from "./pages/manager/ManagerMemberProfile";
+import ManagerAuditLog from "./pages/manager/ManagerAuditLog";
 
 
 function HomeRedirect() {
@@ -43,6 +44,7 @@ export default function App() {
          <Route path="/manager/projects" element={<ProtectedRoute role="manager"><ManagerProjects /></ProtectedRoute>}/>
          <Route path="/manager/users" element={<ProtectedRoute role="manager"><ManagerUsers /></ProtectedRoute>}/>
          <Route path="/manager/members/:id" element={<ProtectedRoute role="manager"><ManagerMemberProfile /></ProtectedRoute> }/>
+         <Route path="/manager/audit-log" element={ <ProtectedRoute role="manager"><ManagerAuditLog /></ProtectedRoute>}/>
          </Routes>
   
       </AuthProvider>

@@ -26,6 +26,9 @@ export default function ManagerNav() {
         <Link to="/manager/users" className="text-gray-700 hover:text-gray-900">
           Users
         </Link>
+         <Link to="/manager/audit-log" className="text-gray-700 hover:text-gray-900">
+          Audit Log
+        </Link>
         <span className="text-gray-400">{user?.name}</span>
         <button onClick={handleLogout} className="text-gray-500 hover:text-gray-900">
           Log out
