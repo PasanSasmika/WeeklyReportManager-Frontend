@@ -43,15 +43,15 @@ export default function ReportHistory() {
   const totalPages = Math.max(Math.ceil(total / limit), 1);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <TeamNav />
 
       <div className="max-w-3xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-lg font-semibold">My weekly reports</h1>
+        <div className="flex items-center justify-between mb-5">
+          <h1 className="text-xl font-semibold text-slate-900">My weekly reports</h1>
           <Link
             to="/my-reports/new"
-            className="bg-gray-900 text-white text-sm px-4 py-2 rounded-md"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm shadow-indigo-200 transition"
           >
             New report
           </Link>
@@ -65,10 +65,10 @@ export default function ReportHistory() {
                 setStatusFilter(tab.value);
                 setPage(1);
               }}
-              className={`text-xs px-3 py-1 rounded-full border ${
+              className={`text-xs font-medium px-3 py-1.5 rounded-full border transition ${
                 statusFilter === tab.value
-                  ? "bg-gray-900 text-white border-gray-900"
-                  : "border-gray-300 text-gray-600"
+                  ? "bg-indigo-600 text-white border-indigo-600"
+                  : "border-slate-300 text-slate-600 hover:bg-slate-50"
               }`}
             >
               {tab.label}
@@ -77,24 +77,24 @@ export default function ReportHistory() {
         </div>
 
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-slate-500">Loading...</p>
         ) : reports.length === 0 ? (
-          <p className="text-sm text-gray-500">No reports found for this filter.</p>
+          <p className="text-sm text-slate-500">No reports found for this filter.</p>
         ) : (
           <div className="space-y-3">
             {reports.map((report) => (
               <Link
                 key={report.id}
                 to={`/my-reports/${report.id}`}
-                className="block bg-white border border-gray-200 rounded-lg p-4 hover:border-gray-400"
+                className="block bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:border-indigo-300 hover:shadow-md transition"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium text-slate-900">
                     Week of {report.week_start} to {report.week_end}
                   </span>
                   <StatusBadge status={report.status} />
                 </div>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-slate-500">
                   {report.project_name || `Project #${report.project_id}`}
                 </span>
               </Link>
@@ -107,17 +107,17 @@ export default function ReportHistory() {
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-40"
+              className="px-3 py-1.5 border border-slate-300 rounded-lg disabled:opacity-40 hover:bg-slate-50 transition"
             >
               Previous
             </button>
-            <span className="text-gray-500">
+            <span className="text-slate-500">
               Page {page} of {totalPages}
             </span>
             <button
               disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-40"
+              className="px-3 py-1.5 border border-slate-300 rounded-lg disabled:opacity-40 hover:bg-slate-50 transition"
             >
               Next
             </button>

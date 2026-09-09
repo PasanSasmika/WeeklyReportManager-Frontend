@@ -10,7 +10,6 @@ export default function ManagerUsers() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // invite form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -79,18 +78,20 @@ export default function ManagerUsers() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <ManagerNav />
 
       <div className="max-w-3xl mx-auto p-6">
-        <h1 className="text-lg font-semibold mb-4">User management</h1>
+        <h1 className="text-xl font-semibold text-slate-900 mb-5">User management</h1>
 
         {/* invite form */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-          <h2 className="text-sm font-medium mb-2">Invite a new user</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 mb-3">Invite a new user</h2>
 
           {error && (
-            <div className="bg-red-50 text-red-700 text-sm rounded-md px-3 py-2 mb-3">{error}</div>
+            <div className="bg-red-50 border border-red-100 text-red-700 text-sm rounded-lg px-3 py-2 mb-3">
+              {error}
+            </div>
           )}
 
           <div className="grid grid-cols-4 gap-3 mb-3">
@@ -98,25 +99,25 @@ export default function ManagerUsers() {
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
             <input
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
             <input
               placeholder="Temporary password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as Role)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+              className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             >
               <option value="team_member">Team member</option>
               <option value="manager">Manager</option>
@@ -126,7 +127,7 @@ export default function ManagerUsers() {
           <button
             onClick={handleInvite}
             disabled={saving}
-            className="bg-gray-900 text-white text-sm px-4 py-2 rounded-md disabled:opacity-50"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm shadow-indigo-200 transition disabled:opacity-50"
           >
             Add user
           </button>
@@ -134,46 +135,35 @@ export default function ManagerUsers() {
 
         {/* user list */}
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-slate-500">Loading...</p>
         ) : (
-          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-left text-xs text-gray-500">
+              <thead className="bg-slate-50 text-left text-xs font-medium text-slate-500 uppercase tracking-wide">
                 <tr>
-                  <th className="px-4 py-2">Name</th>
-                  <th className="px-4 py-2">Email</th>
-                  <th className="px-4 py-2">Role</th>
-                  <th className="px-4 py-2"></th>
+                  <th className="px-4 py-2.5">Name</th>
+                  <th className="px-4 py-2.5">Email</th>
+                  <th className="px-4 py-2.5">Role</th>
+                  <th className="px-4 py-2.5"></th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((u) => (
-                  <tr key={u.id} className="border-t border-gray-100">
-                 <td className="px-4 py-2.5">
-  <Link
-    to={`/manager/members/${u.id}`}
-    className="font-medium text-slate-800 hover:text-indigo-600 transition"
-  >
-    {u.name}
-  </Link>
-</td>
-                    <td className="px-4 py-2 text-gray-500">{u.email}</td>
-                    <td className="px-4 py-2">
                       <select
                         value={u.role}
                         onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
                         disabled={u.id === currentUser?.id}
-                        className="border border-gray-300 rounded-md px-2 py-1 text-xs disabled:opacity-50"
+                        className="border border-slate-300 rounded-lg px-2 py-1 text-xs disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       >
                         <option value="team_member">Team member</option>
                         <option value="manager">Manager</option>
                       </select>
                     </td>
-                    <td className="px-4 py-2 text-right">
+                    <td className="px-4 py-2.5 text-right">
                       {u.id !== currentUser?.id && (
                         <button
                           onClick={() => handleRemove(u.id)}
-                          className="text-xs text-red-500 underline"
+                          className="text-xs font-medium text-rose-500 hover:text-rose-600"
                         >
                           Remove
                         </button>
