@@ -15,6 +15,7 @@ import {
 import api from "../../api/client";
 import { getCurrentWeekRange } from "../../utils/dates";
 import ManagerNav from "../../components/ManagerNav";
+import AiChatWidget from "../../components/AiChatWidget";
 
 interface Summary {
   reportsSubmitted: number;
@@ -181,6 +182,7 @@ export default function ManagerDashboard() {
           )}
         </div>
       </div>
+      <AiChatWidget />
     </div>
   );
 }
